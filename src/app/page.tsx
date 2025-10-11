@@ -1,4 +1,23 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { sessionUtils } from '@/utils/session';
+
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Redirect authenticated users to home page
+    if (sessionUtils.isAuthenticated()) {
+      router.push('/home');
+    } else {
+      // Redirect unauthenticated users to login
+      router.push('/login');
+    }
+  }, [router]);
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="glass rounded-2xl p-8 md:p-12 max-w-2xl w-full text-center">
@@ -24,9 +43,11 @@ export default function Home() {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-              <button className="glass rounded-full px-6 py-3 text-white hover:bg-white/10 transition-all duration-300 border border-white/20">
-                Get Started
-              </button>
+              <Link href="/login">
+                <button className="glass rounded-full px-6 py-3 text-white hover:bg-white/10 transition-all duration-300 border border-white/20">
+                  Get Started
+                </button>
+              </Link>
               <button className="glass rounded-full px-6 py-3 text-white hover:bg-white/10 transition-all duration-300 border border-white/20">
                 Learn More
               </button>

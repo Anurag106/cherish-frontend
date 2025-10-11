@@ -30,6 +30,18 @@ export const env = {
 } as const;
 
 export const apiEndpoints = {
+  // Authentication
   LOGIN: '/api/v1/auth/login',
-  // Add more endpoints here as needed
+  
+  // User endpoints
+  USER_PROFILE: '/api/v1/user/profile',
+  USER_RECIPIENTS: '/api/v1/user/recipients',
+  USER_AUTOCOMPLETE: '/api/v1/user/autocomplete',
+  
+  // Post endpoints
+  POST_CREATE: '/api/v1/post',
+  POST_LIST: '/api/v1/post/list',
+  
+  // Hashtags (when backend is ready)
+  HASHTAGS: '/api/v1/hashtag',
 } as const;

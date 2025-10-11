@@ -27,15 +27,20 @@ export const useAuth = () => {
     try {
       const response: LoginResponse = await apiService.login(credentials);
       
+      // Extract data from nested response
+      const { token, username, expiresAt } = response.data;
+      
       // Store login data in session
       sessionUtils.setLoginData({
-        token: response.token,
-        username: response.username,
-        expiresAt: response.expiresAt,
+        token,
+        username,
+        expiresAt,
       });
 
-      // Also set cookie for middleware
-      document.cookie = `auth_token=${response.token}; path=/; secure; samesite=strict`;
+      // Also set cookies for middleware (token, expires, username)
+      document.cookie = `auth_token=${token}; path=/; secure; samesite=strict`;
+      document.cookie = `auth_expires=${expiresAt}; path=/; secure; samesite=strict`;
+      document.cookie = `auth_username=${username}; path=/; secure; samesite=strict`;
 
       setIsAuthenticated(true);
       return true;
@@ -50,8 +55,10 @@ export const useAuth = () => {
 
   const logout = () => {
     sessionUtils.clearSession();
-    // Clear cookie
+    // Clear all auth cookies
     document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'auth_expires=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'auth_username=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     setIsAuthenticated(false);
     router.push('/login');
   };

@@ -24,8 +24,7 @@
 }
 
 body {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: var(--foreground);
+  
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   min-height: 100vh;
 }
@@ -35,4 +34,53 @@ body {
   backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+/* React Mentions Styles */
+.mentions-input {
+  width: 100%;
+}
+
+.mentions-input textarea {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  line-height: 1.5;
+  resize: none;
+  color: #1f2937;
+}
+
+.mentions-input textarea::placeholder {
+  color: #9ca3af;
+}
+
+.mentions-input__highlighter {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  line-height: 1.5;
+  padding: 0 !important;
+  border: none !important;
+}
+
+.mentions-input__input {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  line-height: 1.5;
+  padding: 0 !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.mentions-input__suggestions {
+  z-index: 50;
+}
+
+.mentions-input__suggestions__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mentions-input__suggestions__item {
+  list-style: none;
+}
+
+.mentions-input__suggestions__item--focused {
+  background-color: #f3f4f6 !important;
 }

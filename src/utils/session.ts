@@ -95,6 +95,21 @@ export const sessionUtils = {
   },
 
   /**
+   * Get complete login data from session
+   */
+  getLoginData: (): { token: string; username: string; expiresAt: string } | null => {
+    const token = sessionUtils.getToken();
+    const username = sessionUtils.getUsername();
+    const expiresAt = sessionUtils.getExpiresAt();
+
+    if (!token || !username || !expiresAt) {
+      return null;
+    }
+
+    return { token, username, expiresAt };
+  },
+
+  /**
    * Check if token is expired
    */
   isTokenExpired: (): boolean => {

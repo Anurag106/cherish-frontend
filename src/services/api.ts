@@ -4,7 +4,8 @@
  */
 
 import { env, apiEndpoints } from '@/config/env';
-import { LoginCredentials, LoginResponse, ApiError } from '@/types/auth';
+import { LoginCredentials, LoginResponse, ApiError, UserProfileResponse } from '@/types/auth';
+import { ApiResponse, HashtagResponse, PostResponse } from '@/types/recognition';
 
 class ApiService {
   private baseURL: string;
@@ -89,6 +90,82 @@ class ApiService {
         ...options.headers,
       },
     });
+  }
+
+  /**
+   * Get user profile
+   */
+  async getUserProfile(token: string): Promise<UserProfileResponse> {
+    return this.authenticatedRequest<UserProfileResponse>(apiEndpoints.USER_PROFILE, {
+      method: 'GET',
+    }, token);
+  }
+
+  /**
+   * Submit a recognition/post
+   */
+  async submitRecognition(token: string, postData: {
+    context: string;
+    visibility: number;
+  }): Promise<PostResponse> {
+    const response = await this.authenticatedRequest<ApiResponse<PostResponse>>(apiEndpoints.POST_CREATE, {
+      method: 'POST',
+      body: JSON.stringify(postData),
+    }, token);
+    
+    return response.data;
+  }
+
+  /**
+   * Get list of recognitions
+   */
+  async getRecognitions(token: string, filters?: {
+    page?: number;
+    limit?: number;
+    userId?: string;
+  }): Promise<any> {
+    const queryParams = new URLSearchParams();
+    if (filters?.page) queryParams.append('page', filters.page.toString());
+    if (filters?.limit) queryParams.append('limit', filters.limit.toString());
+    if (filters?.userId) queryParams.append('userId', filters.userId);
+
+    const queryString = queryParams.toString();
+    const url = queryString ? `${apiEndpoints.POST_LIST}?${queryString}` : apiEndpoints.POST_LIST;
+
+    return this.authenticatedRequest<any>(url, {
+      method: 'GET',
+    }, token);
+  }
+
+  /**
+   * Get hashtags for autocomplete
+   */
+  async getHashtags(token: string, query?: string): Promise<HashtagResponse[]> {
+    const url = apiEndpoints.HASHTAGS;
+    
+    const response = await this.authenticatedRequest<ApiResponse<HashtagResponse[]>>(url, {
+      method: 'GET',
+    }, token);
+    console.log(response,  response.data);
+    return response.data;
+  }
+
+  /**
+   * Get user recipients for mentions (no search query)
+   */
+  async getUserRecipients(token: string): Promise<any[]> {
+    return this.authenticatedRequest<any[]>(apiEndpoints.USER_RECIPIENTS, {
+      method: 'GET',
+    }, token);
+  }
+
+  /**
+   * Autocomplete users for mentions (with search query)
+   */
+  async autocompleteUsers(token: string, search: string): Promise<any[]> {
+    return this.authenticatedRequest<any[]>(`${apiEndpoints.USER_AUTOCOMPLETE}?search=${encodeURIComponent(search)}`, {
+      method: 'GET',
+    }, token);
   }
 }
 

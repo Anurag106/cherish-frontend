@@ -16,7 +16,7 @@ export default function LoginPage() {
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      router.push('/dashboard');
+      router.push('/home');
     }
   }, [isAuthenticated, router]);
 
@@ -37,9 +37,9 @@ export default function LoginPage() {
     
     const success = await login(formData);
     if (success) {
-      // Get redirect URL from query params or default to dashboard
+      // Get redirect URL from query params or default to home
       const urlParams = new URLSearchParams(window.location.search);
-      const redirectTo = urlParams.get('redirect') || '/dashboard';
+      const redirectTo = urlParams.get('redirect') || '/home';
       router.push(redirectTo);
     }
   };
