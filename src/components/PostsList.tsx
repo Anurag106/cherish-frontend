@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Post, Comment, Like, CommentCreateRequest, AddOnRequest, LikeRequest, PostFilterRequest } from '@/types/recognition';
+import { Post, Comment, Like, CommentCreateRequest, LikeRequest, PostFilterRequest } from '@/types/recognition';
 import { PostCard } from './PostCard';
 import { CommentSection } from './CommentSection';
 import { LikesModal } from './LikesModal';
@@ -11,9 +11,13 @@ import { transformPosts } from '@/utils/postTransformers';
 
 interface PostsListProps {
   className?: string;
+  feedFilters?: {
+    filterByTeam?: boolean;
+    filterByUserId?: string;
+  };
 }
 
-export const PostsList: React.FC<PostsListProps> = ({ className = '' }) => {
+export const PostsList: React.FC<PostsListProps> = ({ className = '', feedFilters }) => {
   const getToken = useCallback(() => {
     const loginData = sessionUtils.getLoginData();
     return loginData?.token;
@@ -56,6 +60,7 @@ export const PostsList: React.FC<PostsListProps> = ({ className = '' }) => {
         pageSize: 8,
         cursor: cursor || undefined,
         sortOrder: 'CreatedAtDesc',
+        ...feedFilters, // Apply feed filters
       };
 
       const response = await apiService.getPosts(token, filters);
@@ -76,7 +81,7 @@ export const PostsList: React.FC<PostsListProps> = ({ className = '' }) => {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [getToken]);
+  }, [getToken, feedFilters]);
 
   // Initial load
   useEffect(() => {
@@ -132,23 +137,16 @@ export const PostsList: React.FC<PostsListProps> = ({ className = '' }) => {
   };
 
   // Handle add-on submission
-  const handleAddOnSubmit = async (data: AddOnRequest) => {
+  const handleAddOnSubmit = async (data: CommentCreateRequest) => {
     const token = getToken();
     if (!token) return;
 
     try {
       await apiService.addOn(token, data);
       
-      // Update the post amount
-      setPosts(prev => prev.map(post => 
-        post.id === data.postId 
-          ? { 
-              ...post, 
-              amount: (post.amount || 0) + data.amount,
-              giverCount: post.giverCount + 1 
-            }
-          : post
-      ));
+      // Update the post amount (for add-ons, we'll need to extract amount from content or metadata)
+      // For now, we'll just refresh the post or handle it differently
+      console.log('Add-on submitted:', data);
     } catch (err) {
       console.error('Error adding add-on:', err);
       throw err;
