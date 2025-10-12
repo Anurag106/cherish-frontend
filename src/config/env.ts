@@ -40,7 +40,18 @@ export const apiEndpoints = {
   
   // Post endpoints
   POST_CREATE: '/api/v1/post',
-  POST_LIST: '/api/v1/post/list',
+  POST_LIST: '/api/v1/post',
+  
+  // Comment endpoints
+  COMMENT_CREATE: '/api/v1/comment',
+  COMMENT_LIST: '/api/v1/comment/list',
+  
+  // Like endpoints
+  LIKE_POST: '/api/v1/reaction',
+  LIKE_LIST: '/api/v1/like/list',
+  
+  // Add-on endpoints
+  ADD_ON: '/api/v1/addon',
   
   // Hashtags (when backend is ready)
   HASHTAGS: '/api/v1/hashtag',

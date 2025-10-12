@@ -7,6 +7,7 @@ import { useUser } from '@/contexts/UserContext';
 import { sessionUtils } from '@/utils/session';
 import { apiService } from '@/services/api';
 import PostCreationPlaceholder from '@/components/PostCreationPlaceholder';
+import { PostsList } from '@/components/PostsList';
 
 export default function HomePage() {
   const router = useRouter();
@@ -103,8 +104,9 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-3xl mx-auto pt-6">
+      <div className="max-w-3xl mx-auto pt-6 space-y-6">
         <PostCreationPlaceholder hashtags={hashtags} />
+        <PostsList />
       </div>
     </div>
   );

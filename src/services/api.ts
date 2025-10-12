@@ -5,7 +5,7 @@
 
 import { env, apiEndpoints } from '@/config/env';
 import { LoginCredentials, LoginResponse, ApiError, UserProfileResponse } from '@/types/auth';
-import { ApiResponse, HashtagResponse, PostResponse } from '@/types/recognition';
+import { ApiResponse, HashtagResponse, PostResponse, PostsResponse, PostFilterRequest, Comment, CommentCreateRequest, LikeRequest } from '@/types/recognition';
 
 class ApiService {
   private baseURL: string;
@@ -117,25 +117,33 @@ class ApiService {
   }
 
   /**
-   * Get list of recognitions
+   * Get list of posts with cursor-based pagination
    */
-  async getRecognitions(token: string, filters?: {
-    page?: number;
-    limit?: number;
-    userId?: string;
-  }): Promise<any> {
+  async getPosts(token: string, filters?: PostFilterRequest): Promise<PostsResponse> {
+    // Build query parameters
     const queryParams = new URLSearchParams();
-    if (filters?.page) queryParams.append('page', filters.page.toString());
-    if (filters?.limit) queryParams.append('limit', filters.limit.toString());
-    if (filters?.userId) queryParams.append('userId', filters.userId);
+    if (filters?.pageSize) queryParams.append('pageSize', filters.pageSize.toString());
+    if (filters?.cursor) queryParams.append('cursor', filters.cursor);
+    if (filters?.filterByTeam !== undefined) queryParams.append('filterByTeam', filters.filterByTeam.toString());
+    if (filters?.filterByUserId) queryParams.append('filterByUserId', filters.filterByUserId);
+    if (filters?.hashtagIds && filters.hashtagIds.length > 0) {
+      filters.hashtagIds.forEach(id => queryParams.append('hashtagIds', id.toString()));
+    }
+    if (filters?.hashtagNames && filters.hashtagNames.length > 0) {
+      filters.hashtagNames.forEach(name => queryParams.append('hashtagNames', name));
+    }
+    if (filters?.sortOrder) queryParams.append('sortOrder', filters.sortOrder);
 
     const queryString = queryParams.toString();
     const url = queryString ? `${apiEndpoints.POST_LIST}?${queryString}` : apiEndpoints.POST_LIST;
-
-    return this.authenticatedRequest<any>(url, {
+    
+    const response = await this.authenticatedRequest<ApiResponse<PostsResponse>>(url, {
       method: 'GET',
     }, token);
+    
+    return response.data;
   }
+
 
   /**
    * Get hashtags for autocomplete
@@ -164,6 +172,63 @@ class ApiService {
    */
   async autocompleteUsers(token: string, search: string): Promise<any[]> {
     return this.authenticatedRequest<any[]>(`${apiEndpoints.USER_AUTOCOMPLETE}?search=${encodeURIComponent(search)}`, {
+      method: 'GET',
+    }, token);
+  }
+
+  /**
+   * Create a comment on a post
+   */
+  async createComment(token: string, commentData: CommentCreateRequest): Promise<Comment> {
+    return this.authenticatedRequest<Comment>(apiEndpoints.COMMENT_CREATE, {
+      method: 'POST',
+      body: JSON.stringify(commentData),
+    }, token);
+  }
+
+  /**
+   * Get comments for a post
+   */
+  async getComments(token: string, postId: string, limit: number = 5): Promise<Comment[]> {
+    return this.authenticatedRequest<Comment[]>(`${apiEndpoints.COMMENT_LIST}?postId=${postId}&limit=${limit}`, {
+      method: 'GET',
+    }, token);
+  }
+
+  /**
+   * Add an add-on to a post (uses the same comment endpoint)
+   */
+  async addOn(token: string, addOnData: CommentCreateRequest): Promise<any> {
+    return this.authenticatedRequest<any>(apiEndpoints.COMMENT_CREATE, {
+      method: 'POST',
+      body: JSON.stringify(addOnData),
+    }, token);
+  }
+
+  /**
+   * Like or react to a post
+   */
+  async likePost(token: string, likeData: LikeRequest): Promise<any> {
+    return this.authenticatedRequest<any>(apiEndpoints.LIKE_POST, {
+      method: 'POST',
+      body: JSON.stringify(likeData),
+    }, token);
+  }
+
+  /**
+   * Remove like/reaction from a post
+   */
+  async unlikePost(token: string, postId: string): Promise<any> {
+    return this.authenticatedRequest<any>(`${apiEndpoints.LIKE_POST}?postId=${postId}`, {
+      method: 'DELETE',
+    }, token);
+  }
+
+  /**
+   * Get likes for a post
+   */
+  async getLikes(token: string, postId: string): Promise<any[]> {
+    return this.authenticatedRequest<any[]>(`${apiEndpoints.LIKE_LIST}?postId=${postId}`, {
       method: 'GET',
     }, token);
   }
