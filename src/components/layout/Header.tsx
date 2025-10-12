@@ -7,10 +7,10 @@ import {
   BellIcon,
   ChevronDownIcon,
 } from '@heroicons/react/24/outline';
-import { sessionUtils } from '@/utils/session';
+import { sessionUtils } from '@/utils/api/session';
 import { navigationManager, PageType } from '@/utils/navigation';
 import { useUser } from '@/contexts/UserContext';
-import SearchBar from '@/components/SearchBar';
+import SearchBar from './SearchBar';
 
 const PAGES: { key: PageType; label: string }[] = [
   { key: 'home', label: 'Home' },

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { SparklesIcon } from '@heroicons/react/24/outline';
 import { useUser } from '@/contexts/UserContext';
-import GiveRecognitionModal from './GiveRecognitionModal';
+import GiveRecognitionModal from '../../modals/GiveRecognitionModal';
 
 interface PostCreationPlaceholderProps {
   hashtags?: string[];

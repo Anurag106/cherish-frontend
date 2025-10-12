@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { navigationManager } from '@/utils/navigation';
 import { useUser } from '@/contexts/UserContext';
-import { sessionUtils } from '@/utils/session';
-import { apiService } from '@/services/api';
-import PostCreationPlaceholder from '@/components/PostCreationPlaceholder';
-import { FeedLayout } from '@/components/FeedLayout';
+import { sessionUtils } from '@/utils/api/session';
+import { hashtagsApi } from '@/services/api/hashtags/hashtagsApi';
+import PostCreationPlaceholder from '@/components/features/posts/PostCreationPlaceholder';
+import { FeedLayout } from '@/components/features/feed/FeedLayout';
 
 export default function HomePage() {
   const router = useRouter();
@@ -59,13 +59,13 @@ export default function HomePage() {
         // Load hashtags from API (only once)
         setIsLoadingHashtags(true);
         try {
-          const hashtagsData = await apiService.getHashtags(loginData.token);
+          const hashtagsData = await hashtagsApi.getHashtags(loginData.token);
           const hashtagsList = Array.isArray(hashtagsData) 
             ? hashtagsData.map((h) => h.name)
             : [];
           setHashtags(hashtagsList);
           console.log('✅ Hashtags loaded:', hashtagsList.length);
-        } catch (hashtagError: any) {
+        } catch (hashtagError: unknown) {
           console.warn('Hashtags API not available (404), using fallback hashtags');
 
         }

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
-import { FeedFilterType } from '@/components/FeedFilter';
-import { FeedOptionType } from '@/components/AddFeedModal';
+import { FeedFilterType } from '@/components/features/feed/FeedFilter';
+import { FeedOptionType } from '@/components/modals/AddFeedModal';
 import { useUser } from '@/contexts/UserContext';
 
 export const useFeedFilter = () => {
@@ -35,12 +35,12 @@ export const useFeedFilter = () => {
       case 'team':
         return { filterByTeam: true };
       case 'forYou':
-        return { filterByUserId: userProfile?.id };
+        return { filterByUserId: userProfile?.username };
       case 'company':
       default:
         return { filterByTeam: false };
     }
-  }, [selectedFilter, userProfile?.id]);
+  }, [selectedFilter, userProfile?.username]);
 
   return {
     selectedFilter,

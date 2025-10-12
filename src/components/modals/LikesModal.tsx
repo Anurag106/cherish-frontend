@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Like } from '@/types/recognition';
-import { Avatar } from './ui/Avatar';
-import { Button } from './ui/Button';
+import { Like } from '@/types/api/recognition';
+import { Avatar } from '../ui/Avatar';
+import { Button } from '../ui/Button';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 interface LikesModalProps {

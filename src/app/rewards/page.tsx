@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { navigationManager } from '@/utils/navigation';
 import { useUser } from '@/contexts/UserContext';
-import { sessionUtils } from '@/utils/session';
+import { sessionUtils } from '@/utils/api/session';
 
 export default function RewardsPage() {
   const router = useRouter();

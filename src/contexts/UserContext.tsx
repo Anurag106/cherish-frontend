@@ -1,9 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { UserProfileResponse } from '@/types/auth';
-import { apiService } from '@/services/api';
-import { sessionUtils } from '@/utils/session';
+import { UserProfileResponse } from '@/types/api/auth';
+import { authApi } from '@/services/api/auth/authApi';
+import { sessionUtils } from '@/utils/api/session';
 
 interface UserContextType {
   userProfile: UserProfileResponse | null;
@@ -27,7 +27,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     try {
       const token = sessionUtils.getToken();
       if (token) {
-        const profile = await apiService.getUserProfile(token);
+        const profile = await authApi.getUserProfile(token);
         setUserProfile(profile);
       }
     } catch (err) {

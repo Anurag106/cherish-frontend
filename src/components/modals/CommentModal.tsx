@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { CommentCreateRequest } from '@/types/recognition';
-import { Button } from './ui/Button';
+import { CommentCreateRequest } from '@/types/api/recognition';
+import { Button } from '../ui/Button';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 interface CommentModalProps {
@@ -34,9 +34,7 @@ export const CommentModal: React.FC<CommentModalProps> = ({
       await onSubmit({
         postId,
         content: content.trim(),
-        amount,
-        hashtags: hashtags.length > 0 ? hashtags : undefined,
-        includeGiver,
+        postedByAdded: includeGiver,
       });
       
       // Reset form

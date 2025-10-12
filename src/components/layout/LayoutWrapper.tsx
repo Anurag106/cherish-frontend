@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import Header from './Header';
-import { sessionUtils } from '@/utils/session';
+import { sessionUtils } from '@/utils/api/session';
 
 interface LayoutWrapperProps {
   children: React.ReactNode;

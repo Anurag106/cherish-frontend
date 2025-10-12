@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { CommentCreateRequest, AddOnRequest } from '@/types/recognition';
-import { Avatar } from './ui/Avatar';
+import { CommentCreateRequest } from '@/types/api/recognition';
+import { Avatar } from '../../ui/Avatar';
 
 interface UnifiedCommentFormProps {
   postId: string;
   onSubmitComment: (data: CommentCreateRequest) => Promise<void>;
-  onSubmitAddOn: (data: AddOnRequest) => Promise<void>;
+  onSubmitAddOn: (data: CommentCreateRequest) => Promise<void>;
   onCancel: () => void;
   onSuccess: () => void;
   isSubmitting?: boolean;
@@ -43,13 +43,11 @@ export const UnifiedCommentForm: React.FC<UnifiedCommentFormProps> = ({
 
     try {
       // For now, submit as comment
-      await onSubmitComment({
-        postId,
-        content: value.trim(),
-        amount: selectedAmount || undefined,
-        hashtags: undefined,
-        includeGiver,
-      });
+        await onSubmitComment({
+          postId,
+          content: value.trim(),
+          postedByAdded: includeGiver,
+        });
       
       // Only reset form and close on success
       setValue('');

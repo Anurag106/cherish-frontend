@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Post, Comment, Like, CommentCreateRequest, LikeRequest, PostFilterRequest } from '@/types/recognition';
+import { Post, Comment, Like, CommentCreateRequest, LikeRequest, PostFilterRequest } from '@/types/api/recognition';
 import { PostCard } from './PostCard';
-import { CommentSection } from './CommentSection';
-import { LikesModal } from './LikesModal';
-import { apiService } from '@/services/api';
-import { sessionUtils } from '@/utils/session';
-import { transformPosts } from '@/utils/postTransformers';
+import { CommentSection } from '../comments/CommentSection';
+import { LikesModal } from '../../modals/LikesModal';
+import { postsApi } from '@/services/api/posts/postsApi';
+import { commentsApi } from '@/services/api/comments/commentsApi';
+import { likesApi } from '@/services/api/likes/likesApi';
+import { sessionUtils } from '@/utils/api/session';
+import { transformPosts } from '@/utils/api/postTransformers';
 
 interface PostsListProps {
   className?: string;
@@ -63,7 +65,7 @@ export const PostsList: React.FC<PostsListProps> = ({ className = '', feedFilter
         ...feedFilters, // Apply feed filters
       };
 
-      const response = await apiService.getPosts(token, filters);
+      const response = await postsApi.getPosts(token, filters);
       const transformedPosts = transformPosts(response.posts || []);
 
       if (append) {
@@ -118,7 +120,7 @@ export const PostsList: React.FC<PostsListProps> = ({ className = '', feedFilter
     if (!token) throw new Error('No token available');
 
     try {
-      const newComment = await apiService.createComment(token, data);
+      const newComment = await commentsApi.createComment(token, data);
       
       // Update the post with the new comment
       setPosts(prev => prev.map(post => 
@@ -142,7 +144,7 @@ export const PostsList: React.FC<PostsListProps> = ({ className = '', feedFilter
     if (!token) return;
 
     try {
-      await apiService.addOn(token, data);
+      await commentsApi.addOn(token, data);
       
       // Update the post amount (for add-ons, we'll need to extract amount from content or metadata)
       // For now, we'll just refresh the post or handle it differently
@@ -159,7 +161,7 @@ export const PostsList: React.FC<PostsListProps> = ({ className = '', feedFilter
     if (!token) return;
 
     try {
-      await apiService.likePost(token, { postId, reactionType });
+      await likesApi.likePost(token, { postId, reactionType });
       
       // Update the post with the new like
       setPosts(prev => prev.map(post => {
@@ -219,7 +221,7 @@ export const PostsList: React.FC<PostsListProps> = ({ className = '', feedFilter
     if (!token) return;
 
     try {
-      await apiService.unlikePost(token, postId);
+      await likesApi.unlikePost(token, postId);
       
       // Update the post by removing the like
       setPosts(prev => prev.map(post => {
@@ -245,7 +247,7 @@ export const PostsList: React.FC<PostsListProps> = ({ className = '', feedFilter
     if (!token) return;
 
     try {
-      const likes = await apiService.getLikes(token, postId);
+      const likes = await likesApi.getLikes(token, postId);
       setLikesModal({ isOpen: true, likes });
     } catch (err) {
       console.error('Error loading likes:', err);
@@ -311,7 +313,7 @@ export const PostsList: React.FC<PostsListProps> = ({ className = '', feedFilter
         
         {!hasMore && posts.length > 0 && (
           <div className="text-center py-4 text-gray-500">
-            You've reached the end of the posts
+            You&apos;ve reached the end of the posts
           </div>
         )}
       </div>

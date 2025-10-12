@@ -2,8 +2,8 @@
  * Utility functions to transform backend API responses to frontend format
  */
 
-import { PostWithDetailsResponse, CommentResponse, ReactionResponse, ReactionCountsResponse } from '@/types/recognition';
-import { Post, Comment, Like, UserProfile } from '@/types/recognition';
+import { PostWithDetailsResponse, CommentResponse, ReactionResponse, ReactionCountsResponse } from '@/types/api/recognition';
+import { Post, Comment, Like, UserProfile } from '@/types/api/recognition';
 
 // Map backend reaction types to frontend reaction types
 const reactionTypeMap: Record<string, Like['reactionType']> = {

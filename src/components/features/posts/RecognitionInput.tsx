@@ -47,9 +47,9 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { MentionsInput, Mention as MentionComponent } from 'react-mentions';
 import type { SuggestionDataItem } from 'react-mentions';
-import { validateRecognitionText } from '@/utils/parseRecognitionMarkup';
-import { sessionUtils } from '@/utils/session';
-import { apiService } from '@/services/api';
+import { validateRecognitionText } from '@/utils/ui/parseRecognitionMarkup';
+import { sessionUtils } from '@/utils/api/session';
+import { usersApi } from '@/services/api/users/usersApi';
 import { Popover } from '@headlessui/react';
 import { FaceSmileIcon, GifIcon, PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import dynamic from 'next/dynamic';
@@ -126,10 +126,10 @@ export default function RecognitionInput({
         let apiResponse;
         if (query.trim() === '') {
           // Fetch all recipients when no query
-          apiResponse = await apiService.getUserRecipients(loginData.token);
+          apiResponse = await usersApi.getUserRecipients(loginData.token);
         } else {
           // Use autocomplete when there's a query
-          apiResponse = await apiService.autocompleteUsers(loginData.token, query);
+          apiResponse = await usersApi.autocompleteUsers(loginData.token, query);
         }
         
         // Handle the ApiResponse<List<UserMentionResponse>> format

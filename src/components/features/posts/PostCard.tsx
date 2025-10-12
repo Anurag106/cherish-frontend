@@ -1,16 +1,16 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Post, Like, Comment, CommentResponse } from '@/types/recognition';
-import { Avatar } from './ui/Avatar';
-import { Button } from './ui/Button';
-import { Badge } from './ui/Badge';
-import { useReactions } from '@/hooks/useReactions';
-import { UnifiedCommentForm } from './UnifiedCommentForm';
+import { Post, Like, Comment, CommentResponse } from '@/types/api/recognition';
+import { Avatar } from '../../ui/Avatar';
+import { Button } from '../../ui/Button';
+import { Badge } from '../../ui/Badge';
+import { useReactions } from '@/hooks/ui/useReactions';
+import { UnifiedCommentForm } from '../comments/UnifiedCommentForm';
 import { HeartIcon, ChatBubbleLeftIcon, PlusIcon, BookmarkIcon, EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import { HandThumbUpIcon, HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 import { formatDistanceToNow } from 'date-fns';
-import { getInitialsFromDisplay } from '@/utils/initials';
+import { getInitialsFromDisplay } from '@/utils/ui/initials';
 
 interface PostCardProps {
   post: Post;

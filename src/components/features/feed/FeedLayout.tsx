@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { FeedFilter } from './FeedFilter';
-import { AddFeedModal } from './AddFeedModal';
-import { PostsList } from './PostsList';
-import { useFeedFilter } from '@/hooks/useFeedFilter';
+import { AddFeedModal } from '../../modals/AddFeedModal';
+import { PostsList } from '../posts/PostsList';
+import { useFeedFilter } from '@/hooks/ui/useFeedFilter';
 
 interface FeedLayoutProps {
   children: React.ReactNode;

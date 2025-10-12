@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { AddOnRequest } from '@/types/recognition';
-import { Button } from './ui/Button';
+import { CommentCreateRequest } from '@/types/api/recognition';
+import { Button } from '../ui/Button';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 interface AddOnModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: AddOnRequest) => void;
+  onSubmit: (data: CommentCreateRequest) => void;
   postId: string;
 }
 
@@ -32,9 +32,8 @@ export const AddOnModal: React.FC<AddOnModalProps> = ({
     try {
       await onSubmit({
         postId,
-        amount,
-        hashtags: hashtags.length > 0 ? hashtags : undefined,
-        includeGiver,
+        content: `Add-on: ${amount} points`,
+        postedByAdded: includeGiver,
       });
       
       // Reset form

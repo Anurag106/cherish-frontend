@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Like } from '@/types/recognition';
+import { Like } from '@/types/api/recognition';
 
 interface ClientReaction {
   postId: string;

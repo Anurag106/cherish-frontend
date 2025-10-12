@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { UserGroupIcon, BuildingOfficeIcon, MapPinIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Button } from './ui/Button';
+import { Button } from '../ui/Button';
 
 export type FeedOptionType = 'teams' | 'departments' | 'locations';
 

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/api/useAuth';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -135,7 +135,7 @@ export default function LoginPage() {
 
           <div className="text-center">
             <p className="text-white/70 text-sm">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link
                 href="/register"
                 className="text-white hover:text-white/80 transition-colors duration-200 font-medium"

@@ -5,9 +5,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { apiService } from '@/services/api';
-import { sessionUtils } from '@/utils/session';
-import { LoginCredentials, LoginResponse, ApiError } from '@/types/auth';
+import { authApi } from '@/services/api/auth/authApi';
+import { sessionUtils } from '@/utils/api/session';
+import { LoginCredentials, LoginResponse, ApiError } from '@/types/api/auth';
 
 export const useAuth = () => {
   const router = useRouter();
@@ -25,7 +25,7 @@ export const useAuth = () => {
     setError(null);
 
     try {
-      const response: LoginResponse = await apiService.login(credentials);
+      const response: LoginResponse = await authApi.login(credentials);
       
       // Extract data from nested response
       const { token, username, expiresAt } = response.data;

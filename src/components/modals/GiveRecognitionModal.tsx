@@ -11,10 +11,10 @@ import {
   UserGroupIcon,
   LockClosedIcon,
 } from '@heroicons/react/24/outline';
-import RecognitionInput from '@/components/RecognitionInput';
+import RecognitionInput from '../features/posts/RecognitionInput';
 import { useUser } from '@/contexts/UserContext';
-import { apiService } from '@/services/api';
-import { sessionUtils } from '@/utils/session';
+import { postsApi } from '@/services/api/posts/postsApi';
+import { sessionUtils } from '@/utils/api/session';
 
 interface GiveRecognitionModalProps {
   isOpen: boolean;
@@ -52,7 +52,7 @@ export default function GiveRecognitionModal({
       console.log('Submitting post:', postData);
 
       // Submit to backend API
-      const result = await apiService.submitRecognition(loginData.token, postData);
+      const result = await postsApi.submitRecognition(loginData.token, postData);
 
       // Success - show message and close modal
       alert('Recognition submitted successfully! 🎉');

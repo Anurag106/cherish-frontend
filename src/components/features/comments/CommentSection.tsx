@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Comment as CommentType } from '@/types/recognition';
-import { Avatar } from './ui/Avatar';
-import { Button } from './ui/Button';
+import { Comment as CommentType } from '@/types/api/recognition';
+import { Avatar } from '../../ui/Avatar';
+import { Button } from '../../ui/Button';
 import { formatDistanceToNow } from 'date-fns';
 
 interface CommentSectionProps {
