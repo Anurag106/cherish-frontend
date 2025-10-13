@@ -4,6 +4,7 @@ import React from 'react';
 import { FeedFilter } from './FeedFilter';
 import { AddFeedModal } from '../../modals/AddFeedModal';
 import { PostsList } from '../posts/PostsList';
+import YourTeam from '../team/YourTeam';
 import { useFeedFilter } from '@/hooks/ui/useFeedFilter';
 
 interface FeedLayoutProps {
@@ -27,13 +28,14 @@ export const FeedLayout: React.FC<FeedLayoutProps> = ({
 
   return (
     <div className={`flex gap-6 ${className}`}>
-      {/* Feed Filter Sidebar */}
-      <div className="w-64 flex-shrink-0">
+      {/* Left Sidebar */}
+      <div className="w-64 flex-shrink-0 space-y-6">
         <FeedFilter
           selectedFilter={selectedFilter}
           onFilterChange={handleFilterChange}
           onAddFeed={handleAddFeed}
         />
+        <YourTeam />
       </div>
 
       {/* Main Content */}

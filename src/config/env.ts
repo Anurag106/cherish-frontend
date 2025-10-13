@@ -38,6 +38,9 @@ export const apiEndpoints = {
   USER_RECIPIENTS: '/api/v1/user/recipients',
   USER_AUTOCOMPLETE: '/api/v1/user/autocomplete',
   
+  // Team endpoints
+  TEAM: '/api/v1/team',
+  
   // Post endpoints
   POST_CREATE: '/api/v1/post',
   POST_LIST: '/api/v1/post',
