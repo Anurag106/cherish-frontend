@@ -5,6 +5,9 @@ import { FeedFilter } from './FeedFilter';
 import { AddFeedModal } from '../../modals/AddFeedModal';
 import { PostsList } from '../posts/PostsList';
 import YourTeam from '../team/YourTeam';
+import RewardsCard from '../rewards/RewardsCard';
+import CelebrationsCard from '../celebrations/CelebrationsCard';
+import TrendingCard from '../trending/TrendingCard';
 import { useFeedFilter } from '@/hooks/ui/useFeedFilter';
 
 interface FeedLayoutProps {
@@ -44,6 +47,13 @@ export const FeedLayout: React.FC<FeedLayoutProps> = ({
           {children}
           <PostsList feedFilters={getApiFilters()} />
         </div>
+      </div>
+
+      {/* Right Sidebar */}
+      <div className="w-64 flex-shrink-0 space-y-6">
+        <RewardsCard />
+        <CelebrationsCard />
+        <TrendingCard />
       </div>
 
       {/* Add Feed Modal */}

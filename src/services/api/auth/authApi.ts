@@ -21,9 +21,18 @@ export class AuthApiService extends BaseApiService {
    * Get user profile
    */
   async getUserProfile(token: string): Promise<UserProfileResponse> {
-    return this.authenticatedRequest<UserProfileResponse>(apiEndpoints.USER_PROFILE, {
+    const response = await this.authenticatedRequest<UserProfileResponse>(apiEndpoints.USER_PROFILE, {
       method: 'GET',
     }, token);
+    
+    console.log('👤 Raw user profile API response:', response);
+    console.log('👤 Points in API response:', {
+      totalPoints: response.totalPoints,
+      availablePoints: response.availablePoints,
+      type: typeof response.totalPoints
+    });
+    
+    return response;
   }
 }
 

@@ -58,4 +58,13 @@ export const apiEndpoints = {
   
   // Hashtags (when backend is ready)
   HASHTAGS: '/api/v1/hashtag',
+  
+  // Rewards endpoints
+  REWARDS: '/api/v1/rewards',
+  
+  // Celebrations endpoints
+  CELEBRATIONS: '/api/v1/celebrations',
+  
+  // Trending endpoints
+  TRENDING: '/api/v1/trending',
 } as const;
