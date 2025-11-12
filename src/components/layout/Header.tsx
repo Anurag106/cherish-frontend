@@ -11,6 +11,7 @@ import { sessionUtils } from '@/utils/api/session';
 import { navigationManager, PageType } from '@/utils/navigation';
 import { useUser } from '@/contexts/UserContext';
 import SearchBar from './SearchBar';
+import { ANALYTICS_MENU_ITEMS } from '@/constants/analytics';
 
 const PAGES: { key: PageType; label: string }[] = [
   { key: 'home', label: 'Home' },
@@ -60,25 +61,15 @@ export default function Header() {
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo + company */}
-          <div className="flex items-center space-x-3">
-            <div className="flex-shrink-0">
-              <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18c-3.31 0-6-2.69-6-6V8.5l6-3 6 3V14c0 3.31-2.69 6-6 6z" />
-                </svg>
-              </div>
-            </div>
-            <div>
-              <div className="text-gray-900 font-semibold text-base">
-                {userProfile?.companyName || 'ABC Organization'}
-              </div>
-              <div className="text-gray-500 text-xs">Recognition Platform</div>
+          {/* Logo */}
+          <div className="flex items-center">
+            <div className="text-2xl font-bold text-gray-900">
+              PLAYLIST
             </div>
           </div>
 
           {/* Tabs navigation (hidden on small screens) */}
-          <div className="hidden md:flex items-center">
+          <div className="hidden lg:flex items-center">
             <Tab.Group
               selectedIndex={selectedTabIndex}
               onChange={(index) => {
@@ -127,47 +118,29 @@ export default function Header() {
                           leaveFrom="transform opacity-100 scale-100"
                           leaveTo="transform opacity-0 scale-95"
                         >
-                          <Menu.Items className="absolute left-0 mt-2 w-44 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+                          <Menu.Items className="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
                             <div className="py-1">
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <button
-                                    onClick={() => handleNavigation('analytics')}
-                                    className={`${
-                                      active ? 'bg-gray-50 text-gray-900' : 'text-gray-700'
-                                    } block w-full text-left px-4 py-2 text-sm`}
-                                  >
-                                    Overview
-                                  </button>
-                                )}
-                              </Menu.Item>
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <button
-                                    onClick={() => {
-                                      router.push('/analytics/reports');
-                                      navigationManager.setCurrentPage('analytics');
-                                    }}
-                                    className={`${
-                                      active ? 'bg-gray-50 text-gray-900' : 'text-gray-700'
-                                    } block w-full text-left px-4 py-2 text-sm`}
-                                  >
-                                    Reports
-                                  </button>
-                                )}
-                              </Menu.Item>
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <button
-                                    onClick={() => router.push('/analytics/insights')}
-                                    className={`${
-                                      active ? 'bg-gray-50 text-gray-900' : 'text-gray-700'
-                                    } block w-full text-left px-4 py-2 text-sm`}
-                                  >
-                                    Insights
-                                  </button>
-                                )}
-                              </Menu.Item>
+                              {ANALYTICS_MENU_ITEMS.map((item) => {
+                                const Icon = item.icon;
+                                return (
+                                  <Menu.Item key={item.key}>
+                                    {({ active }) => (
+                                      <button
+                                        onClick={() => {
+                                          router.push(item.path);
+                                          navigationManager.setCurrentPage('analytics');
+                                        }}
+                                        className={`${
+                                          active ? 'bg-blue-50 text-blue-900' : 'text-gray-700'
+                                        } flex items-center w-full text-left px-4 py-2 text-sm transition-colors`}
+                                      >
+                                        <Icon className={`w-4 h-4 mr-3 ${active ? 'text-blue-600' : 'text-gray-400'}`} />
+                                        <span>{item.label}</span>
+                                      </button>
+                                    )}
+                                  </Menu.Item>
+                                );
+                              })}
                             </div>
                           </Menu.Items>
                         </Transition>
@@ -180,21 +153,23 @@ export default function Header() {
           </div>
 
           {/* Right actions */}
-          <div className="flex items-center space-x-3">
-            {/* Search Bar */}
-            <SearchBar />
+          <div className="flex items-center space-x-2 lg:space-x-3">
+            {/* Search Bar - Hidden on mobile */}
+            <div className="hidden md:block">
+              <SearchBar />
+            </div>
 
             {/* Notifications */}
             <button className="relative p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
-              <BellIcon className="w-6 h-6" />
+              <BellIcon className="w-5 h-5 lg:w-6 lg:h-6" />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-blue-500 rounded-full"></span>
             </button>
 
             {/* User menu */}
             <Menu as="div" className="relative">
               <Menu.Button className="flex items-center space-x-2 p-1 rounded-lg hover:bg-gray-50 transition-colors">
-                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-medium text-sm">{getUserInitials()}</span>
+                <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
+                  <span className="text-gray-900 font-medium text-sm">{getUserInitials()}</span>
                 </div>
               </Menu.Button>
 
@@ -210,14 +185,11 @@ export default function Header() {
                 <Menu.Items className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
                   <div className="px-4 py-3 border-b border-gray-100">
                     <p className="text-sm font-medium text-gray-900">
-                      {userProfile?.firstName} {userProfile?.lastName}
+                      {getUserInitials()} {userProfile?.firstName} {userProfile?.lastName}
                     </p>
-                    <p className="text-sm text-gray-500 truncate">{userProfile?.email}</p>
-                    {userProfile?.jobTitle && (
-                      <p className="text-xs text-gray-400 mt-1">
-                        {userProfile.jobTitle} • {userProfile.department}
-                      </p>
-                    )}
+                    <button className="text-sm text-blue-600 hover:text-blue-700 mt-1">
+                      View profile
+                    </button>
                   </div>
 
                   <div className="py-1">
@@ -226,7 +198,7 @@ export default function Header() {
                         <button
                           className={`${active ? 'bg-gray-50' : ''} block w-full text-left px-4 py-2 text-sm text-gray-700`}
                         >
-                          Profile Settings
+                          Announcements
                         </button>
                       )}
                     </Menu.Item>
@@ -236,7 +208,7 @@ export default function Header() {
                         <button
                           className={`${active ? 'bg-gray-50' : ''} block w-full text-left px-4 py-2 text-sm text-gray-700`}
                         >
-                          Account Settings
+                          Bookmarks
                         </button>
                       )}
                     </Menu.Item>
@@ -246,7 +218,7 @@ export default function Header() {
                         <button
                           className={`${active ? 'bg-gray-50' : ''} block w-full text-left px-4 py-2 text-sm text-gray-700`}
                         >
-                          Help & Support
+                          Profile settings
                         </button>
                       )}
                     </Menu.Item>
@@ -258,7 +230,7 @@ export default function Header() {
                             onClick={handleLogout}
                             className={`${active ? 'bg-red-50' : ''} block w-full text-left px-4 py-2 text-sm text-red-600`}
                           >
-                            Sign Out
+                            Log out
                           </button>
                         )}
                       </Menu.Item>

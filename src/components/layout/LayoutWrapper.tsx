@@ -21,10 +21,12 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
   const showHeader = isAuthenticated && !isPublicRoute;
 
   return (
-    <>
+    <div className="min-h-screen bg-gray-50">
       {showHeader && <Header />}
-      {children}
-    </>
+      <main className={showHeader ? 'pt-0' : ''}>
+        {children}
+      </main>
+    </div>
   );
 }
 

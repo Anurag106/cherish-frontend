@@ -25,12 +25,12 @@ export default function PostCreationPlaceholder({ hashtags = [] }: PostCreationP
   return (
     <>
       {/* Main Card */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-        <div className="flex items-center gap-4">
+      <div className="modern-card p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row items-center gap-4">
           {/* User Avatar */}
           <div className="flex-shrink-0">
-            <div className="w-12 h-12 rounded-full bg-cyan-500 flex items-center justify-center">
-              <span className="text-white font-semibold text-lg">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-cyan-500 flex items-center justify-center">
+              <span className="text-white font-semibold text-sm sm:text-lg">
                 {getUserInitials()}
               </span>
             </div>
@@ -39,29 +39,33 @@ export default function PostCreationPlaceholder({ hashtags = [] }: PostCreationP
           {/* Post Input Field - Opens Recognition Modal */}
           <button
             onClick={() => setIsRecognitionModalOpen(true)}
-            className="flex-1 text-left px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
+            className="flex-1 w-full text-left px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
           >
             <div className="flex items-center gap-2 text-gray-400">
               <span className="text-sm">Start a post...</span>
-              <SparklesIcon className="w-5 h-5 text-orange-400" />
+              <SparklesIcon className="w-4 h-4 sm:w-5 sm:h-5 text-orange-400" />
             </div>
           </button>
 
-          {/* Points Display */}
-          <div className="flex items-center gap-2 px-4 py-2 bg-green-50 rounded-lg">
-            <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">$</span>
+          {/* Points Display and Give Recognition Button */}
+          <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
+            {/* Points Display */}
+            <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-green-50 rounded-lg">
+              <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-green-500 flex items-center justify-center">
+                <span className="text-white font-bold text-xs sm:text-sm">$</span>
+              </div>
+              <span className="text-gray-900 font-semibold text-sm sm:text-lg">{availablePoints}</span>
             </div>
-            <span className="text-gray-900 font-semibold text-lg">{availablePoints}</span>
+
+            {/* Give Recognition Button */}
+            <button
+              onClick={() => setIsRecognitionModalOpen(true)}
+              className="px-4 sm:px-6 py-2 sm:py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-medium rounded-xl transition-colors shadow-sm text-sm sm:text-base"
+            >
+              <span className="hidden sm:inline">Give Recognition</span>
+              <span className="sm:hidden">Give</span>
+            </button>
           </div>
-
-          {/* Give Recognition Button */}
-          <button
-            onClick={() => setIsRecognitionModalOpen(true)}
-            className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-medium rounded-xl transition-colors shadow-sm"
-          >
-            Give Recognition
-          </button>
         </div>
       </div>
 

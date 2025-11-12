@@ -67,4 +67,13 @@ export const apiEndpoints = {
   
   // Trending endpoints
   TRENDING: '/api/v1/trending',
+  
+  // Analytics endpoints
+  ANALYTICS_TEAM_DASHBOARD: '/api/v1/analytics/team-dashboard',
+  ANALYTICS_LEADERBOARD: '/api/v1/analytics/leaderboard',
+  ANALYTICS_LEADERBOARD_HASHTAGS: '/api/v1/analytics/leaderboard-hashtags',
+  ANALYTICS_PARTICIPATION: '/api/v1/analytics/participation',
+  ANALYTICS_RECOGNITION: '/api/v1/analytics/recognition',
+  ANALYTICS_ORGANIZATION_GRAPH: '/api/v1/analytics/organization-graph',
+  ANALYTICS_TOP_WORDS: '/api/v1/analytics/top-words',
 } as const;

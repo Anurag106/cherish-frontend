@@ -15,12 +15,15 @@ interface RewardBadgeComponentProps {
 }
 
 const RewardBadgeComponent: React.FC<RewardBadgeComponentProps> = ({ badge }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
   const getBadgeIcon = () => {
     switch (badge.type) {
       case 'bonus':
         return <span className="text-white font-bold text-sm">{badge.value}</span>;
       case 'special':
-        return <SparklesIcon className="w-4 h-4 text-white" />;
+        return <SparklesIcon className={`w-4 h-4 text-white transition-transform duration-200 ${isHovered ? 'animate-spin' : ''}`} />;
       case 'achievement':
         return <span className="text-white text-sm">🏆</span>;
       default:
@@ -28,9 +31,28 @@ const RewardBadgeComponent: React.FC<RewardBadgeComponentProps> = ({ badge }) =>
     }
   };
 
+  const handleClick = () => {
+    setIsAnimating(true);
+    setTimeout(() => setIsAnimating(false), 600);
+  };
+
   return (
-    <div className={`w-10 h-10 rounded-full ${badge.color} flex items-center justify-center border-2 border-white shadow-sm`}>
-      {getBadgeIcon()}
+    <div 
+      className={`
+        w-10 h-10 rounded-full ${badge.color} flex items-center justify-center 
+        border-2 border-white shadow-lg cursor-pointer transition-all duration-300
+        hover:scale-110 hover:shadow-xl hover:shadow-purple-200/50
+        ${isAnimating ? 'animate-bounce' : ''}
+        ${isHovered ? 'ring-2 ring-purple-300 ring-opacity-50' : ''}
+        interactive
+      `}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={handleClick}
+    >
+      <div className={`transition-transform duration-200 ${isHovered ? 'scale-110' : ''}`}>
+        {getBadgeIcon()}
+      </div>
     </div>
   );
 };
@@ -119,34 +141,49 @@ export default function RewardsCard({ className = '' }: RewardsCardProps) {
   });
 
   return (
-    <div className={`bg-white rounded-xl shadow-sm border border-gray-100 p-6 ${className}`}>
+    <div className={`modern-card p-6 ${className} group hover:shadow-strong`}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold text-gray-900">Rewards</h2>
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 gradient-success rounded-full flex items-center justify-center shadow-lg floating">
             <ShoppingCartIcon className="w-5 h-5 text-white" />
           </div>
-          <span className="text-lg font-bold text-gray-900">
-            {displayPoints.toLocaleString()}
-          </span>
-          
+          <h2 className="text-lg font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">
+            Rewards
+          </h2>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="bg-gradient-to-r from-green-400 to-emerald-500 rounded-full p-2 shadow-lg">
+            <span className="text-lg font-bold text-white">
+              {displayPoints.toLocaleString()}
+            </span>
+          </div>
         </div>
       </div>
 
       {/* Reward Badges */}
       <div className="flex gap-3 mb-6">
-        {generateBadges().map((badge) => (
-          <RewardBadgeComponent key={badge.id} badge={badge} />
+        {generateBadges().map((badge, index) => (
+          <div 
+            key={badge.id} 
+            className="animate-fade-in-up" 
+            style={{ animationDelay: `${0.1 * index}s` }}
+          >
+            <RewardBadgeComponent badge={badge} />
+          </div>
         ))}
       </div>
 
       {/* Shop Rewards Button */}
       <button
         onClick={handleShopRewards}
-        className="w-full bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-600 hover:to-teal-600 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+        className="w-full btn-primary py-3 px-4 rounded-xl font-semibold text-white relative overflow-hidden group/btn"
       >
-        Shop rewards
+        <span className="relative z-10 flex items-center justify-center gap-2">
+          <ShoppingCartIcon className="w-5 h-5" />
+          Shop rewards
+        </span>
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-teal-600 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
       </button>
     </div>
   );

@@ -132,7 +132,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   };
 
   return (
-    <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-6 ${className}`}>
+    <div className={`modern-card p-4 sm:p-6 ${className}`}>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-3">
@@ -214,25 +214,25 @@ export const PostCard: React.FC<PostCardProps> = ({
 
       {/* Footer */}
       <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-4">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setShowCommentForm(!showCommentForm)}
-            className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
+            className="flex items-center space-x-1 sm:space-x-2 text-gray-600 hover:text-gray-900 text-xs sm:text-sm"
           >
-            <ChatBubbleLeftIcon className="w-5 h-5" />
-            <span>Comment</span>
+            <ChatBubbleLeftIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="hidden sm:inline">Comment</span>
           </Button>
           
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setShowCommentForm(!showCommentForm)}
-            className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
+            className="flex items-center space-x-1 sm:space-x-2 text-gray-600 hover:text-gray-900 text-xs sm:text-sm"
           >
-            <PlusIcon className="w-5 h-5" />
-            <span>Add-On</span>
+            <PlusIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="hidden sm:inline">Add-On</span>
           </Button>
         </div>
 
@@ -243,18 +243,18 @@ export const PostCard: React.FC<PostCardProps> = ({
             onClick={handleDirectLike}
             onMouseEnter={handleLikeHover}
             onMouseLeave={handleLikeLeave}
-            className={`flex items-center space-x-2 px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+            className={`flex items-center space-x-1 sm:space-x-2 px-2 sm:px-3 py-1 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
               userHasReacted 
                 ? 'text-blue-600 hover:text-blue-700' 
                 : 'text-gray-600 hover:text-gray-900'
             }`}
           >
             {userHasReacted ? (
-              <HandThumbUpIcon className="w-5 h-5" />
+              <HandThumbUpIcon className="w-4 h-4 sm:w-5 sm:h-5" />
             ) : (
-              <HandThumbUpIcon className="w-5 h-5" />
+              <HandThumbUpIcon className="w-4 h-4 sm:w-5 sm:h-5" />
             )}
-            <span>Like</span>
+            <span className="hidden sm:inline">Like</span>
           </button>
 
           {/* Reaction Popup */}

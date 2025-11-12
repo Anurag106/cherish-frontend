@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { SparklesIcon } from '@heroicons/react/24/outline';
+import { SparklesIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { Avatar } from '../../ui/Avatar';
 import { teamApi, TeamResponse } from '@/services/api/team/teamApi';
 import { sessionUtils } from '@/utils/api/session';
@@ -210,66 +210,52 @@ export default function YourTeam({ className = '' }: YourTeamProps) {
   }
 
   return (
-    <div className={`bg-white rounded-xl shadow-sm border border-gray-100 p-6 ${className}`}>
+    <div className={`modern-card p-6 ${className}`}>
       {/* Header */}
-      <div className="flex items-center gap-2 mb-6">
-        <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-          <div className="w-3 h-3 bg-blue-400 rounded-full"></div>
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+          <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
         </div>
-        <h2 className="text-lg font-semibold text-gray-900">{teamData?.name || 'Your team'}</h2>
+        <h2 className="text-lg font-semibold text-gray-900">Your team</h2>
       </div>
 
       {/* Recognition Progress Card */}
-      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg p-4 mb-6 border border-blue-100">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-medium text-gray-700">Recognition Progress</span>
-          <span className="text-sm font-semibold text-gray-900">
-            {progress.current}/{progress.target}
-          </span>
+      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-4 mb-6 border border-blue-100">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+            <span className="text-white text-xs">👤</span>
+          </div>
+          <span className="text-sm font-semibold text-gray-800">You recognized {progress.current}/{progress.target}</span>
         </div>
-        
-        {/* Progress Bar */}
-        <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
-          <div 
-            className="bg-gradient-to-r from-blue-400 to-cyan-400 h-2 rounded-full transition-all duration-300"
+        <div className="w-full bg-blue-200 rounded-full h-2.5 mb-2">
+          <div
+            className="bg-gradient-to-r from-blue-400 to-cyan-500 h-2.5 rounded-full transition-all duration-500"
             style={{ width: `${progressPercentage}%` }}
           ></div>
         </div>
-        
-        <div className="flex items-center gap-1">
-          <SparklesIcon className="w-4 h-4 text-yellow-500" />
-          <span className="text-sm text-gray-600">
-            {progress.daysRemaining} days remaining
-          </span>
+        <div className="flex items-center text-xs text-gray-600">
+          <span>{progress.daysRemaining} days remaining</span>
         </div>
       </div>
 
-      {/* Team Members Section */}
+      {/* Haven't Recognized Section */}
       <div>
-        <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide mb-4">
-          Team Members
-        </h3>
-        
+        <h3 className="text-sm font-semibold text-gray-900 mb-4">Haven't recognized</h3>
         <div className="space-y-3">
-          {teamMembers && teamMembers.length > 0 ? teamMembers.map((member) => (
-            <div key={member.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-              <Avatar
-                src={undefined}
-                initials={member.initials}
-                size="md"
-                className={`${member.color} text-white`}
-              />
-              
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium text-gray-900 text-sm truncate">
-                    {member.name}
-                  </span>
-                  <SparklesIcon className="w-4 h-4 text-gray-300 flex-shrink-0 ml-2" />
+          {teamMembers && teamMembers.length > 0 ? teamMembers.slice(0, 5).map((member, index) => (
+            <div
+              key={member.id}
+              className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 cursor-pointer interactive group"
+            >
+              <div className="flex items-center gap-3">
+                <Avatar initials={member.initials} size="md" className={member.color} />
+                <div>
+                  <p className="font-medium text-gray-900 text-sm">{member.initials} {member.name}</p>
+                  <p className="text-xs text-gray-500">13 days ago</p>
                 </div>
-                <span className="text-xs text-gray-500">
-                  {member.lastRecognition}
-                </span>
+              </div>
+              <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                <span className="text-blue-600 text-xs">👏</span>
               </div>
             </div>
           )) : (
@@ -278,6 +264,13 @@ export default function YourTeam({ className = '' }: YourTeamProps) {
             </div>
           )}
         </div>
+        
+        {teamMembers && teamMembers.length > 5 && (
+          <button className="flex items-center gap-2 text-gray-600 hover:text-gray-800 text-sm font-medium mt-3 transition-colors">
+            Show more
+            <ChevronDownIcon className="w-4 h-4" />
+          </button>
+        )}
       </div>
     </div>
   );

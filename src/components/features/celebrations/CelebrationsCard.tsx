@@ -16,6 +16,8 @@ interface CelebrationItemProps {
 }
 
 const CelebrationItem: React.FC<CelebrationItemProps> = ({ celebration }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   const getInitials = (fullName: string): string => {
     if (!fullName) return '??';
     const words = fullName.split(' ').filter(Boolean);
@@ -25,20 +27,26 @@ const CelebrationItem: React.FC<CelebrationItemProps> = ({ celebration }) => {
   };
 
   return (
-    <div className="flex items-center gap-3 py-2">
-      <Avatar
-        src={undefined}
-        initials={getInitials(celebration.userFullName)}
-        size="md"
-        className={celebration.avatarColor}
-      />
+    <div 
+      className="flex items-center gap-3 py-2 px-3 rounded-lg transition-all duration-200 hover:bg-gray-50 cursor-pointer interactive group"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className={`transition-transform duration-200 ${isHovered ? 'scale-110' : ''}`}>
+        <Avatar
+          src={undefined}
+          initials={getInitials(celebration.userFullName)}
+          size="md"
+          className={`${celebration.avatarColor} shadow-lg`}
+        />
+      </div>
       <div className="flex-1 min-w-0">
-        <p className="font-medium text-gray-900 text-sm truncate">
+        <p className="font-medium text-gray-900 text-sm truncate group-hover:text-gray-700 transition-colors">
           {celebration.userFullName}
         </p>
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-blue-400 rounded-full flex-shrink-0"></div>
-          <p className="text-xs text-gray-600 truncate">
+          <div className={`w-2 h-2 bg-blue-400 rounded-full flex-shrink-0 transition-all duration-200 ${isHovered ? 'animate-pulse' : ''}`}></div>
+          <p className="text-xs text-gray-600 truncate group-hover:text-gray-500 transition-colors">
             {celebration.context}
           </p>
         </div>
@@ -141,16 +149,18 @@ export default function CelebrationsCard({ className = '' }: CelebrationsCardPro
   }
 
   return (
-    <div className={`bg-white rounded-xl shadow-sm border border-gray-100 p-6 ${className}`}>
+    <div className={`modern-card p-6 ${className} group hover:shadow-strong`}>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
-            <span className="text-white text-xs">🎉</span>
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 gradient-warning rounded-full flex items-center justify-center shadow-lg floating">
+            <span className="text-white text-sm">🎉</span>
           </div>
-          <h2 className="text-lg font-semibold text-gray-900">Celebrations</h2>
+          <h2 className="text-lg font-semibold text-gray-900 group-hover:text-gray-700 transition-colors">
+            Celebrations
+          </h2>
         </div>
-        <button className="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
+        <button className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-all duration-200 hover:scale-110 interactive">
           <InformationCircleIcon className="w-4 h-4 text-gray-500" />
         </button>
       </div>
@@ -160,9 +170,15 @@ export default function CelebrationsCard({ className = '' }: CelebrationsCardPro
         <h3 className="text-xs font-semibold text-gray-500 tracking-wider uppercase mb-4">
           RECENT
         </h3>
-        <div className="space-y-1">
-          {celebrationsData.celebrations.map((celebration) => (
-            <CelebrationItem key={celebration.id} celebration={celebration} />
+        <div className="space-y-2">
+          {celebrationsData.celebrations.map((celebration, index) => (
+            <div 
+              key={celebration.id}
+              className="animate-fade-in-up"
+              style={{ animationDelay: `${0.1 * index}s` }}
+            >
+              <CelebrationItem celebration={celebration} />
+            </div>
           ))}
         </div>
       </div>
@@ -171,10 +187,10 @@ export default function CelebrationsCard({ className = '' }: CelebrationsCardPro
       <div className="text-center">
         <button
           onClick={handleExploreAll}
-          className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors"
+          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 text-sm font-semibold transition-all duration-200 hover:gap-3 interactive group/btn"
         >
           Explore all this month
-          <ChevronRightIcon className="w-4 h-4" />
+          <ChevronRightIcon className="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
         </button>
       </div>
     </div>
